@@ -1470,7 +1470,6 @@
  *
  * Some examples:
  *   #define NOZZLE_TO_PROBE_OFFSET { 10, 10, -1 }   // Example "1"
- *   #define NOZZLE_TO_PROBE_OFFSET { 10, 10, -1 }   // Example "1"
  *   #define NOZZLE_TO_PROBE_OFFSET {-10,  5, -1 }   // Example "2"
  *   #define NOZZLE_TO_PROBE_OFFSET {  5, -5, -1 }   // Example "3"
  *   #define NOZZLE_TO_PROBE_OFFSET {-15,-10, -1 }   // Example "4"
@@ -1485,7 +1484,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -41, -13, -1.03 }
+#define NOZZLE_TO_PROBE_OFFSET { -41, -13, -1.47 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
