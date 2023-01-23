@@ -1490,7 +1490,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -41, -13, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { -41, -13, -1.03 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1883,7 +1883,7 @@
  * these options to restore the prior leveling state or to always enable
  * leveling immediately after G28.
  */
-//#define RESTORE_LEVELING_AFTER_G28
+// #define RESTORE_LEVELING_AFTER_G28
 #define ENABLE_LEVELING_AFTER_G28
 
 /**
