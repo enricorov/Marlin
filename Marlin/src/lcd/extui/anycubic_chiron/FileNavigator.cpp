@@ -63,16 +63,15 @@ FileNavigator filenavigator;
 FileList  FileNavigator::filelist;                          // Instance of the Marlin file API
 uint16_t  FileNavigator::lastpanelindex;
 uint16_t  FileNavigator::currentindex;                      // override the panel request
-uint8_t   FileNavigator::currentfolderdepth;
+uint8_t   FileNavigator::folderdepth;
 uint16_t  FileNavigator::currentfolderindex[MAX_FOLDER_DEPTH];   // track folder pos for iteration
 char      FileNavigator::currentfoldername[MAX_PATH_LEN + 1];   // Current folder path
 
 FileNavigator::FileNavigator() { reset(); }
 
 void FileNavigator::reset() {
-  DEBUG_ECHOLNPGM("reset()");
   currentfoldername[0] = '\0';
-  currentfolderdepth = 0;
+  folderdepth = 0;
   currentindex = 0;
   lastpanelindex = 0;
   ZERO(currentfolderindex);
@@ -85,27 +84,35 @@ void FileNavigator::reset() {
 void FileNavigator::refresh() { filelist.refresh(); }
 
 void FileNavigator::changeDIR(const char *folder) {
+<<<<<<< HEAD
   if (currentfolderdepth >= MAX_FOLDER_DEPTH) return; // limit the folder depth
   DEBUG_ECHOLNPGM("FD:" , folderdepth, " FP:",currentindex, " currentfolder:", currentfoldername, " enter:", folder);
   currentfolderindex[currentfolderdepth] = currentindex;
+=======
+  if (folderdepth >= MAX_FOLDER_DEPTH) return; // limit the folder depth
+  currentfolderindex[folderdepth] = currentindex;
+>>>>>>> upstream/bugfix-2.1.x
   strcat(currentfoldername, folder);
   strcat(currentfoldername, "/");
   filelist.changeDir(folder);
-  currentfolderdepth++;
+  folderdepth++;
   currentindex = 0;
 }
 
 void FileNavigator::upDIR() {
+<<<<<<< HEAD
   DEBUG_ECHOLNPGM("upDIR() from D:", currentfolderdepth, " N:", currentfoldername);
+=======
+>>>>>>> upstream/bugfix-2.1.x
   if (!filelist.isAtRootDir()) {
     filelist.upDir();
-    currentfolderdepth--;
-    currentindex = currentfolderindex[currentfolderdepth]; // restore last position in the folder
+    folderdepth--;
+    currentindex = currentfolderindex[folderdepth]; // restore last position in the folder
     filelist.seek(currentindex); // restore file information
   }
 
   // Remove the child folder from the stored path
-  if (currentfolderdepth == 0)
+  if (folderdepth == 0)
     currentfoldername[0] = '\0';
   else {
     char * const pos = strchr(currentfoldername, '/');
@@ -117,7 +124,10 @@ void FileNavigator::skiptofileindex(uint16_t skip) {
   if (skip == 0) return;
   while (skip > 0) {
     if (filelist.seek(currentindex)) {
+<<<<<<< HEAD
       DEBUG_ECHOLNPGM("CI:", currentindex, " FD:", currentfolderdepth, " N:", skip, " ", filelist.longFilename());
+=======
+>>>>>>> upstream/bugfix-2.1.x
       if (!filelist.isDir()) {
         skip--;
         currentindex++;
@@ -126,7 +136,7 @@ void FileNavigator::skiptofileindex(uint16_t skip) {
         changeDIR(filelist.shortFilename());
     } // valid file
     if (currentindex == filelist.count()) {
-      if (currentfolderdepth > 0) {
+      if (folderdepth > 0) {
         upDIR();
         currentindex++;
       }
@@ -151,9 +161,13 @@ void FileNavigator::skiptofileindex(uint16_t skip) {
     }
     lastpanelindex = index;
 
+<<<<<<< HEAD
     DEBUG_ECHOLNPGM("index=", index, " currentindex=", currentindex);
 
     if (currentindex == 0 && currentfolderdepth > 0) { // Add a link to go up a folder
+=======
+    if (currentindex == 0 && folderdepth > 0) { // Add a link to go up a folder
+>>>>>>> upstream/bugfix-2.1.x
       // The new panel ignores entries that don't end in .GCO or .gcode so add and pad them.
       if (paneltype <= AC_panel_new) {
         TFTSer.println("<<.GCO");
@@ -166,12 +180,17 @@ void FileNavigator::skiptofileindex(uint16_t skip) {
       filesneeded--;
     }
 
+<<<<<<< HEAD
     for (uint16_t seek = currentindex; seek < currentindex + filesneeded; seek++) {
       if (filelist.seek(seek)) {
         sendFile(paneltype);
         DEBUG_ECHOLNPGM("-", seek, " '", filelist.longFilename(), "' '", currentfoldername, "", filelist.shortFilename(), "'");
       }
     }
+=======
+    for (uint16_t seek = currentindex; seek < currentindex + filesneeded; seek++)
+      if (filelist.seek(seek)) sendFile(paneltype);
+>>>>>>> upstream/bugfix-2.1.x
   }
 
   void FileNavigator::sendFile(panel_type_t paneltype) {
@@ -196,7 +215,7 @@ void FileNavigator::skiptofileindex(uint16_t skip) {
     }
     else { // Not DIR
       TFTSer.write('/');
-      if (currentfolderdepth > 0) TFTSer.print(currentfoldername);
+      if (folderdepth > 0) TFTSer.print(currentfoldername);
       TFTSer.println(filelist.shortFilename());
       TFTSer.print(filelist.longFilename());
 
@@ -212,7 +231,10 @@ void FileNavigator::skiptofileindex(uint16_t skip) {
 #else // Flat file list
 
   void FileNavigator::getFiles(uint16_t index, panel_type_t paneltype, uint8_t filesneeded) {
+<<<<<<< HEAD
     DEBUG_ECHOLNPGM("getFiles() I:", index," L:", lastpanelindex);
+=======
+>>>>>>> upstream/bugfix-2.1.x
     // if we're searching backwards, jump back to start and search forward
     if (index < lastpanelindex) {
       reset();
@@ -232,7 +254,7 @@ void FileNavigator::skiptofileindex(uint16_t skip) {
       } // valid file
 
       if (currentindex == filelist.count()) {
-        if (currentfolderdepth > 0) {
+        if (folderdepth > 0) {
           upDIR();
           currentindex++;
         }
@@ -244,11 +266,14 @@ void FileNavigator::skiptofileindex(uint16_t skip) {
 
   void FileNavigator::sendFile(panel_type_t paneltype) {
     TFTSer.write('/');
-    if (currentfolderdepth > 0) TFTSer.print(currentfoldername);
+    if (folderdepth > 0) TFTSer.print(currentfoldername);
     TFTSer.println(filelist.shortFilename());
-    if (currentfolderdepth > 0) TFTSer.print(currentfoldername);
+    if (folderdepth > 0) TFTSer.print(currentfoldername);
     TFTSer.println(filelist.longFilename());
+<<<<<<< HEAD
     DEBUG_ECHOLNPGM("/", currentfoldername, "", filelist.shortFilename(), " ", filelist.longFilename());
+=======
+>>>>>>> upstream/bugfix-2.1.x
   }
 
 #endif // Flat file list

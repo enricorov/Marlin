@@ -168,7 +168,7 @@ const PinInfo pin_array[] PROGMEM = {
 
 };
 
-#include HAL_PATH(../HAL, pinsDebug.h)  // get the correct support file for this CPU
+#include HAL_PATH(.., pinsDebug.h)  // get the correct support file for this CPU
 
 #ifndef M43_NEVER_TOUCH
   #define M43_NEVER_TOUCH(Q) false
@@ -206,7 +206,7 @@ inline void report_pin_state_extended(pin_t pin, const bool ignore, const bool e
         if (start_string) SERIAL_ECHOF(start_string);
         SERIAL_ECHOPGM("PIN: ");
         PRINT_PIN(pin);
-        PRINT_PORT(pin);
+        print_port(pin);
         if (int8_t(DIGITAL_PIN_TO_ANALOG_PIN(pin)) >= 0) PRINT_PIN_ANALOG(pin); // analog pin number
         else SERIAL_ECHO_SP(8);                                                 // add padding if not an analog pin
       }
@@ -254,7 +254,7 @@ inline void report_pin_state_extended(pin_t pin, const bool ignore, const bool e
     if (start_string) SERIAL_ECHOF(start_string);
     SERIAL_ECHOPGM("PIN: ");
     PRINT_PIN(pin);
-    PRINT_PORT(pin);
+    print_port(pin);
     if (int8_t(DIGITAL_PIN_TO_ANALOG_PIN(pin)) >= 0) PRINT_PIN_ANALOG(pin); // analog pin number
     else SERIAL_ECHO_SP(8);                                                 // add padding if not an analog pin
     SERIAL_ECHOPGM("<unused/unknown>");

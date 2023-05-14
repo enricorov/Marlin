@@ -94,12 +94,20 @@ namespace ExtUI {
     // Called after loading or resetting stored settings
   }
 
+<<<<<<< HEAD
   void onSettingsStored(bool success) {
+=======
+  void onSettingsStored(const bool success) {
+>>>>>>> upstream/bugfix-2.1.x
     // Called after the entire EEPROM has been written,
     // whether successful or not.
   }
 
+<<<<<<< HEAD
   void onSettingsLoaded(bool success) {
+=======
+  void onSettingsLoaded(const bool success) {
+>>>>>>> upstream/bugfix-2.1.x
     // Called after the entire EEPROM has been read,
     // whether successful or not.
   }
@@ -120,6 +128,12 @@ namespace ExtUI {
   #endif
 
   #if ENABLED(POWER_LOSS_RECOVERY)
+    void onSetPowerLoss(const bool onoff) {
+      // Called when power-loss is enabled/disabled
+    }
+    void onPowerLoss() {
+      // Called when power-loss state is detected
+    }
     // Called on resume from power-loss
     void onPowerLossResume() { Chiron.PowerLossRecovery(); }
   #endif
