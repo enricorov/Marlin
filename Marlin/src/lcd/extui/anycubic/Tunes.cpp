@@ -44,7 +44,7 @@
 ========
 >>>>>>>> upstream/bugfix-2.1.x:Marlin/src/lcd/extui/anycubic/Tunes.cpp
 
-#if EITHER(ANYCUBIC_LCD_CHIRON, ANYCUBIC_LCD_VYPER)
+#if ANY(ANYCUBIC_LCD_CHIRON, ANYCUBIC_LCD_VYPER)
 
 #include "Tunes.h"
 <<<<<<<< HEAD:Marlin/src/lcd/extui/anycubic_chiron/Tunes.cpp
@@ -55,19 +55,7 @@
 
 namespace Anycubic {
 
-<<<<<<<< HEAD:Marlin/src/lcd/extui/anycubic_chiron/Tunes.cpp
-  void PlayTune(uint8_t beeperPin, const uint16_t *tune, uint8_t speed=1) {
-    uint8_t pos = 1;
-    const uint16_t wholenotelen = tune[0] / speed;
-    do {
-      const uint16_t freq = tune[pos], notelen = wholenotelen / tune[pos + 1];
-      ::tone(beeperPin, freq, notelen);
-      ExtUI::delay_ms(notelen);
-      pos += 2;
-      if (pos >= MAX_TUNE_LENGTH) break;
-    } while (tune[pos] != n_END);
-========
-  void PlayTune(const uint16_t *tune, const uint8_t speed/*=1*/) {
+  void playTune(const uint16_t *tune, const uint8_t speed/*=1*/) {
     const uint16_t wholenotelen = tune[0] / speed;
     for (uint8_t pos = 1; pos < MAX_TUNE_LENGTH; pos += 2) {
       const uint16_t freq = tune[pos];
